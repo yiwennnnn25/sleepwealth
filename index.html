@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Sleep Wealth</title>
+<meta name="description" content="A luxury nightly ritual for Future You. Tomorrow begins here.">
+<meta name="theme-color" content="#F7F4F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15131C" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sleep Wealth">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F4F1;
+  --bg-grad-a:#F4EDE9;
+  --bg-grad-b:#EDE9F4;
+  --glass:rgba(255,255,255,.62);
+  --glass-border:rgba(255,255,255,.85);
+  --glass-shadow:0 8px 32px rgba(96,84,120,.10);
+  --ink:#2E2937;
+  --muted:#8B8494;
+  --faint:#B5AFBE;
+  --gold:#B08F58;
+  --gold-soft:#D9C5A0;
+  --blush:#E9D5D1;
+  --lavender:#E2DDF0;
+  --good:#9BB59A;
+  --pearl-a:#FFFFFF;
+  --pearl-b:#E9E2EE;
+  --overlay:rgba(34,28,46,.55);
+  --card-radius:24px;
+}
+[data-theme="dark"]{
+  --bg:#15131C;
+  --bg-grad-a:#1A1722;
+  --bg-grad-b:#171522;
+  --glass:rgba(255,255,255,.055);
+  --glass-border:rgba(255,255,255,.10);
+  --glass-shadow:0 8px 32px rgba(0,0,0,.35);
+  --ink:#ECE8F2;
+  --muted:#9A93A8;
+  --faint:#5E586E;
+  --gold:#CBA86F;
+  --gold-soft:#8A7350;
+  --blush:#3A2F35;
+  --lavender:#2B2839;
+  --good:#8FAF8E;
+  --pearl-a:#F4F0F8;
+  --pearl-b:#C9C2D6;
+  --overlay:rgba(8,6,14,.66);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Jost',system-ui,sans-serif;
+  font-weight:300;
+  background:var(--bg);
+  background-image:radial-gradient(1200px 800px at 80% -10%, var(--bg-grad-b), transparent 60%),
+                   radial-gradient(1000px 700px at -10% 30%, var(--bg-grad-a), transparent 55%);
+  color:var(--ink);
+  min-height:100dvh;
+  overscroll-behavior:none;
+  transition:background .5s ease,color .5s ease;
+}
+.app{max-width:430px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 86px)}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+.eyebrow{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:400}
+
+/* ---------- header ---------- */
+header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
+header h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.35rem;letter-spacing:.02em}
+header h1 em{font-style:italic;color:var(--gold)}
+.tagline{font-size:.66rem;font-weight:300;color:var(--faint);letter-spacing:.16em;margin-top:2px}
+#headerDate{font-size:.72rem;color:var(--muted);letter-spacing:.08em;padding-top:6px}
+
+/* ---------- glass card ---------- */
+.card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:var(--card-radius);
+  box-shadow:0 1px 2px rgba(96,84,120,.05), 0 12px 40px rgba(96,84,120,.08);
+  backdrop-filter:blur(20px) saturate(1.15);
+  -webkit-backdrop-filter:blur(20px) saturate(1.15);
+  padding:20px;
+  margin-bottom:16px;
+  transition:box-shadow .5s cubic-bezier(.25,.1,.25,1);
+}
+[data-theme="dark"] .card{box-shadow:0 1px 2px rgba(0,0,0,.25), 0 12px 40px rgba(0,0,0,.30)}
+
+/* ---------- clock row ---------- */
+.clockrow{display:flex;gap:16px}
+.clockrow .card{flex:1;margin-bottom:0;text-align:center;padding:16px 10px}
+.clockrow .time{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;margin-top:6px;font-variant-numeric:tabular-nums}
+.clockrow .time small{font-size:.85rem;color:var(--muted);margin-left:2px}
+.section-gap{height:18px}
+
+/* ---------- moon button ---------- */
+.moonwrap{display:flex;justify-content:center;margin:26px 0 30px;position:relative}
+#moonBtn{
+  width:178px;height:178px;border-radius:50%;border:1px solid var(--glass-border);
+  background:radial-gradient(circle at 32% 28%, var(--pearl-a), var(--pearl-b) 72%);
+  box-shadow:0 18px 50px rgba(110,95,150,.22), inset 0 -10px 24px rgba(110,95,150,.10);
+  color:#5A5168;font-family:'Jost',sans-serif;font-weight:400;font-size:.95rem;letter-spacing:.14em;
+  cursor:pointer;position:relative;transition:transform .25s ease, box-shadow .4s ease, opacity .4s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  animation:breathe 5s ease-in-out infinite;
+}
+[data-theme="dark"] #moonBtn{color:#4A4358}
+#moonBtn .icon{font-size:1.7rem}
+#moonBtn:active{transform:scale(.955);transition-duration:.12s}
+#moonBtn.logged{animation:none;opacity:.92}
+@keyframes breathe{
+  0%,100%{box-shadow:0 18px 50px rgba(110,95,150,.20), inset 0 -10px 24px rgba(110,95,150,.10);transform:scale(1)}
+  50%{box-shadow:0 22px 68px rgba(150,130,190,.36), inset 0 -10px 24px rgba(110,95,150,.10);transform:scale(1.012)}
+}
+@media (prefers-reduced-motion:reduce){#moonBtn{animation:none}}
+
+/* ---------- narrative ---------- */
+.narrative{text-align:center;padding:28px 26px 22px}
+.narrative .glyph{font-size:1.1rem;display:block;margin-bottom:10px}
+.narrative p{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.3rem;line-height:1.48}
+.narrative .fact{
+  font-size:.7rem;font-weight:300;color:var(--faint);letter-spacing:.03em;line-height:1.5;
+  margin-top:16px;padding-top:13px;border-top:1px solid var(--glass-border);
+}
+.fact-hist{font-size:.72rem;color:var(--faint);line-height:1.5;margin-top:10px;padding-top:10px;border-top:1px solid var(--glass-border)}
+
+/* ---------- metrics ---------- */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.metric{padding:16px;margin-bottom:0}
+.metric .val{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:500;margin-top:6px;font-variant-numeric:tabular-nums}
+.metric .val small{font-size:.95rem;color:var(--muted)}
+.metric .sub{font-size:.68rem;color:var(--faint);margin-top:3px;letter-spacing:.04em}
+.gold{color:var(--gold)}
+
+/* ---------- nav ---------- */
+nav{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(env(safe-area-inset-bottom) + 14px);
+  display:flex;gap:4px;padding:6px;border-radius:99px;z-index:40;
+  background:var(--glass);border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:var(--glass-shadow);
+}
+nav button{
+  border:none;background:transparent;color:var(--muted);font-family:'Jost';font-weight:400;
+  font-size:.72rem;letter-spacing:.1em;padding:9px 15px;border-radius:99px;cursor:pointer;
+  transition:background .35s cubic-bezier(.25,.1,.25,1),color .35s,transform .15s;
+}
+nav button:active{transform:scale(.94)}
+nav button.active{background:var(--ink);color:var(--bg)}
+.view{display:none}.view.active{display:block;animation:fadein .5s cubic-bezier(.25,.1,.25,1)}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- garden ---------- */
+#gardenSvg{width:100%;height:auto;display:block}
+.garden-meta{text-align:center;margin-top:10px}
+.garden-meta .big{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:500}
+.garden-meta p{font-size:.78rem;color:var(--muted);margin-top:4px;letter-spacing:.04em}
+
+/* ---------- history ---------- */
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-head b{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.15rem}
+.cal-head button{border:none;background:transparent;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px 12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal-grid .dow{font-size:.62rem;color:var(--faint);letter-spacing:.1em;padding-bottom:4px}
+.cal-day{
+  aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--muted);cursor:pointer;border:1px solid transparent;font-variant-numeric:tabular-nums;
+}
+.cal-day.logged{background:var(--glass);border-color:var(--glass-border);color:var(--ink);box-shadow:0 2px 8px rgba(96,84,120,.08)}
+.cal-day.pearl::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);position:relative;top:9px;left:-3px}
+.cal-day.today{outline:1px solid var(--gold-soft)}
+.day-detail{margin-top:14px}
+.day-detail .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--glass-border);font-size:.86rem}
+.day-detail .row span:first-child{color:var(--muted)}
+.day-detail .quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-top:12px;line-height:1.4;color:var(--ink)}
+
+/* ---------- settings ---------- */
+.set-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--glass-border);gap:12px}
+.set-row:last-child{border-bottom:none}
+.set-row label{font-size:.88rem;font-weight:400}
+.set-row .hint{display:block;font-size:.68rem;color:var(--faint);margin-top:2px;font-weight:300}
+input[type=time],select{
+  font-family:'Jost';font-size:.86rem;color:var(--ink);background:var(--glass);
+  border:1px solid var(--glass-border);border-radius:10px;padding:7px 10px;outline:none;
+}
+.switch{position:relative;width:46px;height:26px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch i{position:absolute;inset:0;background:var(--lavender);border-radius:99px;transition:.3s;cursor:pointer}
+.switch i::before{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.switch input:checked + i{background:var(--gold-soft)}
+.switch input:checked + i::before{transform:translateX(20px)}
+.rem-list .set-row{padding:9px 0}
+
+/* ---------- log overlay ---------- */
+#logOverlay{
+  position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;z-index:100;animation:fadein .7s cubic-bezier(.25,.1,.25,1);
+}
+#logOverlay.show{display:flex}
+#logOverlay .inner{text-align:center;padding:0 36px}
+#logOverlay .orb{
+  width:120px;height:120px;border-radius:50%;margin:0 auto 26px;
+  background:radial-gradient(circle at 34% 30%, #fff, #DCD3E8 75%);
+  animation:orbglow 3s cubic-bezier(.45,0,.55,1) infinite;
+}
+@keyframes orbglow{0%,100%{box-shadow:0 0 40px 8px rgba(220,210,240,.42)}50%{box-shadow:0 0 96px 30px rgba(232,222,255,.72)}}
+#logOverlay h2{font-family:'Cormorant Garamond',serif;font-weight:500;color:#F4F0FA;font-size:1.3rem;letter-spacing:.04em;margin-bottom:4px}
+#logOverlay .stamp{font-family:'Jost';font-weight:300;color:#B8AECB;font-size:.82rem;letter-spacing:.2em;margin-bottom:14px;font-variant-numeric:tabular-nums}
+#logOverlay p{font-family:'Cormorant Garamond',serif;font-style:italic;color:#D9D2E6;font-size:1.15rem;line-height:1.5}
+
+/* ---------- milestone ---------- */
+#milestone{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:110}
+#milestone.show{display:flex;animation:fadein .6s ease}
+#milestone .inner{background:var(--glass);border:1px solid var(--glass-border);border-radius:28px;padding:38px 32px;text-align:center;max-width:320px;margin:0 20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+#milestone .glyph{font-size:2rem}
+#milestone h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin:12px 0 8px}
+#milestone p{font-size:.9rem;color:var(--muted);line-height:1.5;margin-bottom:22px}
+#milestone button{border:none;border-radius:99px;padding:11px 30px;background:var(--ink);color:var(--bg);font-family:'Jost';letter-spacing:.1em;font-size:.78rem;cursor:pointer}
+
+.note{font-size:.72rem;color:var(--faint);line-height:1.5;margin-top:10px}
+h3.view-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;margin:4px 0 16px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>Sleep <em>Wealth</em></h1>
+      <div class="tagline">Tomorrow begins here.</div>
+    </div>
+    <span id="headerDate"></span>
+  </header>
+
+  <!-- ============ TONIGHT ============ -->
+  <section class="view active" id="view-tonight">
+    <div class="clockrow">
+      <div class="card">
+        <span class="eyebrow">Current time</span>
+        <div class="time" id="nowTime">–</div>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Target bedtime</span>
+        <div class="time gold" id="targetTime">–</div>
+      </div>
+    </div>
+
+    <div class="moonwrap">
+      <button id="moonBtn" aria-label="Log sleep now">
+        <span class="icon">🌙</span>
+        <span id="moonLabel">SLEEPING&nbsp;NOW</span>
+      </button>
+    </div>
+
+    <div class="card narrative" id="narrativeCard">
+      <span class="glyph" id="narGlyph"></span>
+      <p id="narText"></p>
+      <div class="fact" id="factText"></div>
+    </div>
+
+    <div class="metrics">
+      <div class="card metric">
+        <span class="eyebrow">Average bedtime</span>
+        <div class="val" id="mAvg">—</div>
+        <div class="sub">last 30 days</div>
+      </div>
+      <div class="card metric">
+        <span class="eyebrow">Bedtime drift</span>
+        <div class="val" id="mDrift">—</div>
+        <div class="sub">vs target</div>
+      </div>
+      <div class="card metric">
+        <span class="eyebrow">Current streak</span>
+        <div class="val" id="mStreak">—</div>
+        <div class="sub" id="mStreakSub">within your window</div>
+      </div>
+      <div class="card metric">
+        <span class="eyebrow">Overall score</span>
+        <div class="val" id="mScore">—</div>
+        <div class="sub">30-day consistency</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STRAND ============ -->
+  <section class="view" id="view-garden">
+    <h3 class="view-title">The Strand</h3>
+    <div class="card" style="padding:14px">
+      <svg id="gardenSvg" viewBox="0 0 380 460" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="garden-meta">
+        <div class="big serif"><span id="pearlCount">0</span> pearls</div>
+        <p id="gardenSub">Each consistent night adds one pearl to the strand.</p>
+      </div>
+    </div>
+    <p class="note">Nothing here ever fades. On a quieter night, the strand simply rests — and grows again with your next consistent evening.</p>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="view" id="view-history">
+    <h3 class="view-title">History</h3>
+    <div class="card">
+      <div class="cal-head">
+        <button id="calPrev" aria-label="Previous month">‹</button>
+        <b id="calLabel"></b>
+        <button id="calNext" aria-label="Next month">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="card day-detail" id="dayDetail" style="display:none"></div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="view" id="view-settings">
+    <h3 class="view-title">Settings</h3>
+    <div class="card">
+      <div class="set-row">
+        <label>Target bedtime</label>
+        <input type="time" id="setTarget">
+      </div>
+      <div class="set-row">
+        <label>Grace window<span class="hint">minutes after target that still count</span></label>
+        <select id="setGrace">
+          <option value="15">15 min</option><option value="30">30 min</option>
+          <option value="45">45 min</option><option value="60">60 min</option>
+        </select>
+      </div>
+      <div class="set-row">
+        <label>Dark mode</label>
+        <select id="setTheme">
+          <option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="set-row">
+        <label>Pearl tone</label>
+        <select id="setPearl">
+          <option value="moon">Moonlight</option><option value="blush">Rose</option><option value="lavender">Amethyst</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="set-row">
+        <label>Evening reminders<span class="hint">shown while the app is open</span></label>
+        <span class="switch"><input type="checkbox" id="setNotif"><i></i></span>
+      </div>
+      <div class="rem-list" id="remList"></div>
+      <p class="note">iPhone note: a web app can only remind you while it's open. For a reminder that interrupts other apps, set an iOS alarm or a Shortcuts automation at your wind-down time.</p>
+    </div>
+
+    <div class="card">
+      <div class="set-row">
+        <label>Export data<span class="hint">download your logs as JSON</span></label>
+        <button id="btnExport" style="border:none;background:var(--lavender);color:var(--ink);border-radius:10px;padding:8px 16px;font-family:'Jost';font-size:.8rem;cursor:pointer">Export</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<nav>
+  <button data-view="tonight" class="active">Tonight</button>
+  <button data-view="garden">Strand</button>
+  <button data-view="history">History</button>
+  <button data-view="settings">Settings</button>
+</nav>
+
+<div id="logOverlay">
+  <div class="inner">
+    <div class="orb"></div>
+    <h2>✨ Sleep Logged</h2>
+    <div class="stamp" id="logStamp"></div>
+    <p id="affText"></p>
+  </div>
+</div>
+
+<div id="milestone">
+  <div class="inner">
+    <span class="glyph" id="msGlyph"></span>
+    <h2 id="msTitle"></h2>
+    <p id="msBody"></p>
+    <button id="msClose">Continue</button>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const KEY='sleepwealth_v1';
+/* legacy v1 narrative list — kept only so old history entries still resolve */
+const LEGACY_NARRATIVES=[
+ "Your skincare routine is applied in minutes. Its results are built overnight.",
+ "Tomorrow's face is under construction right now.",
+ "Sleep is the only anti-aging treatment your body performs for free.",
+ "Your skin barrier has a night shift. Let it clock in on time.",
+ "You can buy better skincare. You can't buy yesterday's sleep back.",
+ "The face you see tomorrow is being built tonight.",
+ "Your overnight repair window is open.",
+ "Recovery compounds quietly.",
+ "Your body performs its maintenance shift while you sleep.",
+ "Tomorrow's energy begins tonight.",
+ "Recovery is an investment, not an expense.",
+ "Consistency compounds.",
+ "Future You is watching tonight's decision.",
+ "Every early night is a vote for the person you're becoming.",
+ "Future You cannot borrow recovery from tomorrow.",
+ "Tonight's decision becomes next month's baseline.",
+ "Small deposits create meaningful change.",
+ "Tomorrow's version of you starts here.",
+ "Sleep is the highest-return investment that costs nothing.",
+ "Compounding works on recovery too.",
+ "You are either depositing into tomorrow or withdrawing from it.",
+ "Consistency creates dividends.",
+ "Recovery generates returns.",
+ "Your future self benefits from today's deposits."
+];
+const NARRATIVES=[
+ /* ---- Appearance ---- */
+ {g:'✨',t:"Your skincare routine ends in minutes. Its work begins overnight."},
+ {g:'✨',t:"Tomorrow's face is under construction right now."},
+ {g:'✨',t:"Sleep is the only anti-aging treatment your body performs for free."},
+ {g:'✨',t:"Your skin barrier has a night shift. Let it clock in on time."},
+ {g:'✨',t:"You can buy better skincare. You cannot buy yesterday's sleep back."},
+ {g:'✨',t:"The face you see tomorrow is being built tonight."},
+ {g:'✨',t:"Serums prepare the canvas. Sleep does the painting."},
+ {g:'✨',t:"Rested skin needs less correcting."},
+ {g:'✨',t:"The most expensive part of your routine is the part you sleep through."},
+ {g:'✨',t:"A good night shows up before any product does."},
+ {g:'✨',t:"Your reflection tomorrow is already being decided."},
+ {g:'✨',t:"Glow is mostly recovery, quietly arranged."},
+ {g:'✨',t:"No highlighter imitates a full night particularly well."},
+ {g:'✨',t:"Skin keeps its appointments at night. Try to keep yours."},
+ {g:'✨',t:"What you call radiance, your skin calls routine maintenance."},
+ {g:'✨',t:"Tired is a look. So is rested. One of them is free."},
+ {g:'✨',t:"The mirror remembers last night longer than you do."},
+ {g:'✨',t:"Tonight is part of tomorrow's skincare routine."},
+ {g:'✨',t:"Your skin has been waiting all day for this part."},
+ {g:'✨',t:"Beauty sleep is the rare cliché that holds up."},
+ {g:'✨',t:"The quietest step in your routine is also the longest one."},
+ {g:'✨',t:"Some treatments take an hour. This one takes a night."},
+ {g:'✨',t:"Skin does its finest work without an audience."},
+ {g:'✨',t:"Tomorrow's softness is tonight's stillness."},
+ {g:'✨',t:"You moisturize. Sleep seals."},
+ {g:'✨',t:"There is no morning product for a missing night."},
+ {g:'✨',t:"Rest is the step between cleanse and glow."},
+ {g:'✨',t:"Your face has a closing time. Honor it."},
+ {g:'✨',t:"The night does quietly what the day undoes loudly."},
+ {g:'✨',t:"Every routine ends the same way: lights off."},
+ {g:'✨',t:"Sleep is the original overnight mask."},
+ {g:'✨',t:"Tomorrow's brightness is already scheduled. Keep the appointment."},
+ {g:'✨',t:"The last step of tonight's routine has no bottle."},
+ {g:'✨',t:"Your skin doesn't need more. It needs longer nights."},
+ {g:'✨',t:"What the day takes from your face, the night returns."},
+ {g:'✨',t:"Resting now is the most flattering thing you'll do today."},
+ /* ---- Recovery ---- */
+ {g:'🌙',t:"Recovery compounds quietly."},
+ {g:'🌙',t:"Your overnight repair window is open."},
+ {g:'🌙',t:"Your body performs its maintenance shift while you sleep."},
+ {g:'🌙',t:"Tomorrow's energy begins tonight."},
+ {g:'🌙',t:"Consistency supports recovery."},
+ {g:'🌙',t:"Tonight belongs to repair."},
+ {g:'🌙',t:"The body keeps working after you stop."},
+ {g:'🌙',t:"Rest is not the absence of progress. It is where progress settles."},
+ {g:'🌙',t:"Nothing on a screen repairs you. This does."},
+ {g:'🌙',t:"Your body has a to-do list for tonight. Let it begin."},
+ {g:'🌙',t:"Repair doesn't need your attention. Only your absence."},
+ {g:'🌙',t:"The night shift starts when you stop supervising."},
+ {g:'🌙',t:"Recovery has no shortcut, only a schedule."},
+ {g:'🌙',t:"Stillness is when the body gets loud about healing."},
+ {g:'🌙',t:"Today's effort becomes tomorrow's ease — overnight."},
+ {g:'🌙',t:"You've carried today far enough. Set it down."},
+ {g:'🌙',t:"Muscles rebuild in the dark. So does patience."},
+ {g:'🌙',t:"The body forgives most days, given the night to do it."},
+ {g:'🌙',t:"Rest is a skill. Tonight is practice."},
+ {g:'🌙',t:"Tomorrow's calm is assembled tonight."},
+ {g:'🌙',t:"Sleep is the one task that completes itself."},
+ {g:'🌙',t:"Your only job now is to be unavailable."},
+ {g:'🌙',t:"The repair crew works best with the lights off."},
+ {g:'🌙',t:"Recovery is patient. It waits for you every night."},
+ {g:'🌙',t:"The day asked a lot. The night gives it back."},
+ {g:'🌙',t:"Energy isn't found in the morning. It's made the night before."},
+ {g:'🌙',t:"Let the body finish what the day started."},
+ {g:'🌙',t:"Nothing urgent survives until morning. Almost nothing real, either."},
+ {g:'🌙',t:"Rest now, so tomorrow doesn't have to be about recovering."},
+ {g:'🌙',t:"The most productive hours of your night require you to do nothing."},
+ {g:'🌙',t:"Tired isn't a flaw. It's an instruction."},
+ {g:'🌙',t:"The night doesn't need to be earned."},
+ {g:'🌙',t:"Some repairs only happen when no one is watching."},
+ {g:'🌙',t:"Your body remembers how to do this part."},
+ {g:'🌙',t:"There is a version of tomorrow that depends on the next eight hours."},
+ /* ---- Future Self ---- */
+ {g:'🌱',t:"Future You is watching tonight's decision."},
+ {g:'🌱',t:"Every early night is a vote for the person you're becoming."},
+ {g:'🌱',t:"Tonight's decision becomes next month's baseline."},
+ {g:'🌱',t:"Tomorrow's version of you starts here."},
+ {g:'🌱',t:"Small decisions become meaningful change."},
+ {g:'🌱',t:"The day is complete."},
+ {g:'🌱',t:"Tomorrow's patience is decided tonight."},
+ {g:'🌱',t:"The person you wake up as is being chosen now."},
+ {g:'🌱',t:"One more episode entertains tonight. One more hour changes tomorrow."},
+ {g:'🌱',t:"Morning You has opinions about this moment."},
+ {g:'🌱',t:"You don't need a better morning routine. You need this one good night."},
+ {g:'🌱',t:"Becoming someone takes many ordinary evenings like this one."},
+ {g:'🌱',t:"Nothing you scroll tonight will matter to next week's you. This will."},
+ {g:'🌱',t:"The future arrives one bedtime at a time."},
+ {g:'🌱',t:"Tomorrow's mood is on tonight's schedule."},
+ {g:'🌱',t:"Endings are a practice. This is tonight's."},
+ {g:'🌱',t:"You are allowed to be finished with today."},
+ {g:'🌱',t:"A consistent bedtime is a quiet form of self-respect."},
+ {g:'🌱',t:"The last decision of the day is often the most important one."},
+ {g:'🌱',t:"There will be more to watch tomorrow. There always is."},
+ {g:'🌱',t:"Closing the day well is its own accomplishment — and it asks nothing of you."},
+ {g:'🌱',t:"Your future self keeps no grudges, only patterns."},
+ {g:'🌱',t:"You can't finish everything. You can finish today."},
+ {g:'🌱',t:"Six months of ordinary nights becomes an extraordinary baseline."},
+ {g:'🌱',t:"Tonight is a small kindness to someone you haven't met yet: tomorrow's you."},
+ {g:'🌱',t:"Whatever is unfinished will still be yours in the morning."},
+ {g:'🌱',t:"The internet stays open all night. You don't have to."},
+ {g:'🌱',t:"Rhythm is built on nights exactly like this one."},
+ {g:'🌱',t:"Choosing sleep is choosing tomorrow over a rerun of tonight."},
+ {g:'🌱',t:"Most of who you become is decided at unremarkable moments like this."},
+ {g:'🌱',t:"The day doesn't need a perfect ending. It needs an ending."},
+ {g:'🌱',t:"Quietly, this is the most future-shaping thing you'll do today."},
+ {g:'🌱',t:"Each consistent night makes the next one easier."},
+ {g:'🌱',t:"Let today be enough."},
+ {g:'🌱',t:"Tomorrow begins here."}
+];
+const FACTS=[
+ "Consistent sleep supports overnight skin barrier recovery.",
+ "Most growth hormone release occurs during deep sleep early in the night.",
+ "Evening cortisol regulation influences how well the body recovers.",
+ "Skin hydration and barrier repair improve overnight.",
+ "Regular sleep timing supports the body's recovery processes.",
+ "Sleep supports memory consolidation and learning.",
+ "The skin barrier performs much of its repair work overnight.",
+ "Recovery is often visible before it is measurable.",
+ "Keeping a regular bedtime helps stabilize the body's internal clock.",
+ "Deep sleep is concentrated in the first half of the night.",
+ "REM sleep supports emotional processing and mood regulation.",
+ "Core body temperature naturally drops as sleep approaches.",
+ "Dim evening light supports the body's natural melatonin release.",
+ "Bright screens late at night can delay the onset of sleepiness.",
+ "Sleep consistency matters alongside sleep duration.",
+ "The brain clears metabolic byproducts more efficiently during sleep.",
+ "Adequate sleep supports normal immune function.",
+ "Sleep helps regulate the appetite hormones leptin and ghrelin.",
+ "Muscle repair and tissue growth are supported during deep sleep.",
+ "Blood pressure typically dips during healthy sleep.",
+ "Caffeine can remain active in the body for six hours or more.",
+ "A cool, dark room supports deeper, more continuous sleep.",
+ "Irregular bedtimes can shift the internal clock, similar to mild jet lag.",
+ "Sleep supports insulin sensitivity and steady energy the next day.",
+ "Collagen synthesis is supported by overnight repair processes.",
+ "Transepidermal water loss from skin tends to be higher at night, making overnight repair important.",
+ "Reaction time and attention measurably improve after sufficient sleep.",
+ "Consistent wake times reinforce consistent bedtimes.",
+ "Sleep supports the consolidation of newly learned motor skills.",
+ "Short evening wind-down routines are associated with falling asleep faster.",
+ "Alcohol close to bedtime fragments sleep later in the night.",
+ "Daylight exposure in the morning helps anchor the sleep-wake cycle.",
+ "Sleep pressure builds steadily across waking hours.",
+ "Most adults function best with seven to nine hours of sleep.",
+ "Naps late in the day can reduce sleep pressure at bedtime.",
+ "The body anticipates a regular bedtime and prepares for it in advance.",
+ "Heart rate gradually slows during the descent into deep sleep.",
+ "Sleep supports the brain's ability to filter relevant from irrelevant information.",
+ "Emotional reactivity tends to be higher after a short night.",
+ "Wound healing is supported by adequate sleep.",
+ "Growth and repair signaling peaks during the deepest stages of sleep.",
+ "A consistent pre-sleep routine acts as a cue for the body to wind down.",
+ "Sleep quality is influenced more by regularity than by occasional long nights.",
+ "Late heavy meals can make it harder to fall asleep comfortably.",
+ "The first sleep cycle of the night is usually the richest in deep sleep.",
+ "Mood tends to be steadier after several consecutive well-slept nights.",
+ "Sleep supports the immune system's response to vaccination and infection.",
+ "Recovery from exercise continues for hours into sleep.",
+ "Bedtime regularity is independently associated with better wellbeing.",
+ "The sleeping brain replays and strengthens the day's experiences.",
+ "Skin blood flow increases at night, supporting nutrient delivery.",
+ "Even one good night measurably improves next-day alertness.",
+ "Light from overhead sources in the evening is more alerting than light from below.",
+ "The urge for one more episode fades faster than tiredness accumulates."
+];
+const AFFIRMATIONS=[
+ "Tomorrow begins here.",
+ "Recovery is now underway.",
+ "Your overnight repair shift has begun.",
+ "Rest is now in progress.",
+ "The world can wait until morning.",
+ "Tonight belongs to recovery.",
+ "The next chapter starts tomorrow.",
+ "You've done enough for today.",
+ "Your body knows what to do next.",
+ "Sleep logged. The rest is automatic.",
+ "A quieter tomorrow starts tonight."
+];
+const MILESTONES={3:{g:'🌱',t:'Momentum',b:"Future You is beginning to notice."},
+ 7:{g:'✨',t:'Rhythm',b:"Consistency is becoming a pattern."},
+ 14:{g:'🌙',t:'Consistency',b:"Two weeks of protecting your overnight recovery window."},
+ 30:{g:'🤍',t:'Ritual',b:"A month of intentional evenings."},
+ 100:{g:'🌕',t:'Enduring',b:"This is no longer a challenge. It is part of your life."}};
+
+let S=load();
+S.settings.reminders.forEach(r=>{if(/dividend/i.test(r.msg)){r.msg='🌙 Your overnight repair window is opening.';}});
+function load(){
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.settings)return d;}catch(e){}
+  return {settings:{target:'23:00',grace:30,theme:'auto',pearl:'moon',notif:false,
+          reminders:[
+            {time:'22:30',msg:'Choose your last interesting thing.',on:true},
+            {time:'22:50',msg:'Your overnight repair window opens soon.',on:true},
+            {time:'23:00',msg:'🌙 Your overnight repair window is opening.',on:true},
+            {time:'23:15',msg:"Netflix will remember where you stopped. Your body won't remember where recovery should have started.",on:true}]},
+          logs:{}};
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(S));}
+
+/* ================= TIME HELPERS ================= */
+const pad=n=>String(n).padStart(2,'0');
+function sleepDateOf(d){ // logs before 6am belong to previous calendar day
+  const x=new Date(d); if(x.getHours()<6)x.setDate(x.getDate()-1);
+  return x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+}
+function fmt12(h,m){const ap=h>=12?'PM':'AM';let hh=h%12;if(hh===0)hh=12;return hh+':'+pad(m)+' '+ap;}
+function dateKey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function lateMinutes(logDate,targetStr){
+  const [th,tm]=targetStr.split(':').map(Number);
+  const sd=new Date(logDate); if(sd.getHours()<6)sd.setDate(sd.getDate()-1);
+  const tgt=new Date(sd.getFullYear(),sd.getMonth(),sd.getDate(),th,tm,0);
+  return Math.round((logDate-tgt)/60000);
+}
+function scoreFor(late){
+  if(late<=0)return 100; if(late<=30)return 90; if(late<=60)return 75;
+  if(late<=90)return 50; if(late<=120)return 25; return 0;
+}
+
+/* ================= METRICS ================= */
+function recentLogs(days){
+  const out=[];const today=sleepDateOf(new Date());
+  const base=new Date(today+'T12:00:00');
+  for(let i=0;i<days;i++){
+    const d=new Date(base);d.setDate(d.getDate()-i);
+    const k=dateKey(d); if(S.logs[k])out.push({key:k,...S.logs[k]});
+  }
+  return out;
+}
+function computeStreak(){
+  const grace=S.settings.grace;let streak=0;
+  const todayKey=sleepDateOf(new Date());
+  const base=new Date(todayKey+'T12:00:00');
+  let i=0;
+  // tonight not yet logged doesn't break the streak
+  if(!S.logs[todayKey])i=1;
+  for(;;i++){
+    const d=new Date(base);d.setDate(d.getDate()-i);
+    const log=S.logs[dateKey(d)];
+    if(log&&log.late<=grace)streak++; else break;
+  }
+  return streak;
+}
+function refreshMetrics(){
+  const logs=recentLogs(30);
+  const [th,tm]=S.settings.target.split(':').map(Number);
+  // average bedtime: minutes since 12:00 noon to handle post-midnight correctly
+  if(logs.length){
+    const mins=logs.map(l=>{let m=l.h*60+l.m; if(l.h<6)m+=1440; return m;});
+    const avg=Math.round(mins.reduce((a,b)=>a+b,0)/mins.length);
+    let ah=Math.floor(avg/60)%24, am=avg%60;
+    document.getElementById('mAvg').innerHTML=fmt12(ah,am).replace(/ (AM|PM)/,' <small>$1</small>');
+    let tmin=th*60+tm; if(th<6)tmin+=1440;
+    const drift=avg-tmin;
+    document.getElementById('mDrift').textContent=(drift>0?'+':drift<0?'−':'±')+Math.abs(drift)+' min';
+    document.getElementById('mDrift').className='val '+(drift>S.settings.grace?'':'gold');
+  }else{
+    document.getElementById('mAvg').textContent='—';
+    document.getElementById('mDrift').textContent='—';
+  }
+  const st=computeStreak();
+  document.getElementById('mStreak').textContent=st===0?'—':st+(st===1?' Day':' Days');
+  if(logs.length>=3){
+    const sc=Math.round(logs.reduce((a,l)=>a+l.score,0)/logs.length);
+    document.getElementById('mScore').innerHTML=sc+' <small>/ 100</small>';
+  }else{
+    document.getElementById('mScore').textContent='—';
+    document.getElementById('mScore').nextElementSibling.textContent=
+      logs.length?'shows after 3 logged nights':'30-day consistency';
+  }
+  document.getElementById('targetTime').innerHTML=fmt12(th,tm).replace(/ (AM|PM)/,' <small>$1</small>');
+}
+
+/* ================= CLOCK ================= */
+let currentNarrative=NARRATIVES[Math.floor(Math.random()*NARRATIVES.length)];
+function tick(){
+  const n=new Date();
+  document.getElementById('nowTime').innerHTML=fmt12(n.getHours(),n.getMinutes()).replace(/ (AM|PM)/,' <small>$1</small>');
+  document.getElementById('headerDate').textContent=n.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+  checkReminders(n);
+  syncMoonState();
+}
+function syncMoonState(){
+  const k=sleepDateOf(new Date());
+  const lbl=document.getElementById('moonLabel');
+  const btn=document.getElementById('moonBtn');
+  if(S.logs[k]){btn.classList.add('logged');lbl.textContent='SLEEP LOGGED';btn.querySelector('.icon').textContent='✨';}
+  else{btn.classList.remove('logged');lbl.innerHTML='SLEEPING&nbsp;NOW';btn.querySelector('.icon').textContent='🌙';}
+}
+
+/* ================= LOGGING ================= */
+document.getElementById('moonBtn').addEventListener('click',()=>{
+  const now=new Date();
+  const k=sleepDateOf(now);
+  const late=lateMinutes(now,S.settings.target);
+  const prevStreak=computeStreak();
+  const existed=!!S.logs[k];
+  S.logs[k]={h:now.getHours(),m:now.getMinutes(),iso:now.toISOString(),
+             late:late,score:scoreFor(late),
+             narText:currentNarrative.t,narGlyph:currentNarrative.g,
+             factText:currentFact};
+  save();refreshMetrics();renderGarden();renderCalendar();syncMoonState();
+  if(navigator.vibrate)try{navigator.vibrate(12);}catch(e){}
+  const aff=AFFIRMATIONS[Math.floor(Math.random()*AFFIRMATIONS.length)];
+  document.getElementById('logStamp').textContent=fmt12(now.getHours(),now.getMinutes());
+  document.getElementById('affText').textContent='✨ '+aff;
+  const ov=document.getElementById('logOverlay');ov.classList.add('show');
+  setTimeout(()=>{ov.classList.remove('show');
+    if(!existed){
+      const st=computeStreak();
+      if(MILESTONES[st]&&st>prevStreak){
+        const m=MILESTONES[st];
+        document.getElementById('msGlyph').textContent=m.g;
+        document.getElementById('msTitle').textContent=m.t;
+        document.getElementById('msBody').textContent=m.b;
+        document.getElementById('milestone').classList.add('show');
+      }
+    }
+  },2800);
+});
+document.getElementById('msClose').onclick=()=>document.getElementById('milestone').classList.remove('show');
+
+/* ================= NARRATIVE + FACT ================= */
+const currentFact=FACTS[Math.floor(Math.random()*FACTS.length)];
+document.getElementById('narGlyph').textContent=currentNarrative.g;
+document.getElementById('narText').textContent=currentNarrative.t;
+document.getElementById('factText').textContent=currentFact;
+
+/* ================= GARDEN ================= */
+const PEARL_TONES={
+  moon:{a:'#FFFFFF',b:'#DCD4E6',hl:'rgba(255,255,255,.95)'},
+  blush:{a:'#FFF6F4',b:'#E8C9C4',hl:'rgba(255,250,248,.95)'},
+  lavender:{a:'#FBFAFF',b:'#CFC6E8',hl:'rgba(252,250,255,.95)'}
+};
+function renderGarden(){
+  const grace=S.settings.grace;
+  const good=Object.keys(S.logs).filter(k=>S.logs[k].late<=grace).sort();
+  const n=good.length;
+  document.getElementById('pearlCount').textContent=n;
+  const svg=document.getElementById('gardenSvg');
+  const tone=PEARL_TONES[S.settings.pearl]||PEARL_TONES.moon;
+  const W=380; // pearls placed along a smooth serpentine curve
+  const H=Math.max(440, 90+Math.ceil(n/7)*64);
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  let pts=[];const total=Math.max(n,1);
+  for(let i=0;i<total;i++){
+    const t=i/Math.max(total-1,1);
+    const y=46+t*(H-92);
+    const x=W/2 + Math.sin(t*Math.PI*2.4 + .6)*(W/2-58);
+    pts.push([x,y]);
+  }
+  let html='';
+  // gold thread
+  if(n>1){
+    let d=`M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for(let i=1;i<pts.length;i++){
+      const [x,y]=pts[i],[px,py]=pts[i-1];
+      d+=` C ${px.toFixed(1)} ${(py+(y-py)/2).toFixed(1)}, ${x.toFixed(1)} ${(py+(y-py)/2).toFixed(1)}, ${x.toFixed(1)} ${y.toFixed(1)}`;
+    }
+    html+=`<path d="${d}" fill="none" stroke="var(--gold-soft)" stroke-width="1.1" opacity=".8"/>`;
+  }
+  html+=`<defs>
+    <radialGradient id="pg" cx="34%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="${tone.a}"/><stop offset="100%" stop-color="${tone.b}"/>
+    </radialGradient></defs>`;
+  if(n===0){
+    html+=`<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="var(--faint)" font-family="Cormorant Garamond,serif" font-style="italic" font-size="17">Your first pearl forms tonight.</text>`;
+  }else{
+    pts.forEach(([x,y],i)=>{
+      const r=i===n-1?11:9;
+      html+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="url(#pg)" stroke="rgba(120,105,150,.18)" stroke-width=".6"/>
+             <ellipse cx="${(x-r*.3).toFixed(1)}" cy="${(y-r*.38).toFixed(1)}" rx="${r*.32}" ry="${r*.22}" fill="${tone.hl}" opacity=".9"/>`;
+    });
+  }
+  svg.innerHTML=html;
+}
+
+/* ================= HISTORY ================= */
+let calCursor=new Date();
+function renderCalendar(){
+  const y=calCursor.getFullYear(),m=calCursor.getMonth();
+  document.getElementById('calLabel').textContent=calCursor.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  const grid=document.getElementById('calGrid');
+  const dows=['S','M','T','W','T','F','S'];
+  let html=dows.map(d=>`<div class="dow">${d}</div>`).join('');
+  const first=new Date(y,m,1).getDay();
+  const days=new Date(y,m+1,0).getDate();
+  const todayK=sleepDateOf(new Date());
+  for(let i=0;i<first;i++)html+='<div></div>';
+  for(let d=1;d<=days;d++){
+    const k=y+'-'+pad(m+1)+'-'+pad(d);
+    const log=S.logs[k];
+    const cls=['cal-day']; if(log){cls.push('logged'); if(log.late<=S.settings.grace)cls.push('pearl');}
+    if(k===todayK)cls.push('today');
+    html+=`<div class="${cls.join(' ')}" data-k="${k}">${d}</div>`;
+  }
+  grid.innerHTML=html;
+  grid.querySelectorAll('.cal-day').forEach(el=>el.onclick=()=>showDay(el.dataset.k));
+}
+function showDay(k){
+  const det=document.getElementById('dayDetail');
+  const log=S.logs[k];
+  const dt=new Date(k+'T12:00:00');
+  const label=dt.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  if(!log){det.style.display='block';det.innerHTML=`<span class="eyebrow">${label}</span><p class="note" style="margin-top:8px">A quieter night. The strand simply rested.</p>`;return;}
+  let narG='✨', narT='';
+  if(log.narText){narG=log.narGlyph||'✨';narT=log.narText;}
+  else if(typeof log.narrative==='number'&&LEGACY_NARRATIVES[log.narrative]){narT=LEGACY_NARRATIVES[log.narrative];}
+  det.style.display='block';
+  det.innerHTML=`<span class="eyebrow">${label}</span>
+    <div class="row" style="margin-top:10px"><span>Bedtime</span><b>${fmt12(log.h,log.m)}</b></div>
+    <div class="row"><span>Score</span><b>${log.score} / 100</b></div>
+    <div class="row"><span>Timing</span><b>${log.late<=0?'before target':log.late+' min after target'}</b></div>
+    ${narT?`<p class="quote">${narG} ${narT}</p>`:''}
+    ${log.factText?`<p class="fact-hist">${log.factText}</p>`:''}`;
+}
+document.getElementById('calPrev').onclick=()=>{calCursor.setMonth(calCursor.getMonth()-1);renderCalendar();};
+document.getElementById('calNext').onclick=()=>{calCursor.setMonth(calCursor.getMonth()+1);renderCalendar();};
+
+/* ================= SETTINGS ================= */
+function applyTheme(){
+  const t=S.settings.theme;
+  const dark=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.theme=dark?'dark':'light';
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+function initSettings(){
+  const s=S.settings;
+  setTarget.value=s.target; setGrace.value=s.grace; setTheme.value=s.theme;
+  setPearl.value=s.pearl; setNotif.checked=s.notif;
+  setTarget.onchange=e=>{s.target=e.target.value;save();refreshAll();};
+  setGrace.onchange=e=>{s.grace=+e.target.value;save();refreshAll();};
+  setTheme.onchange=e=>{s.theme=e.target.value;save();applyTheme();};
+  setPearl.onchange=e=>{s.pearl=e.target.value;save();renderGarden();};
+  setNotif.onchange=async e=>{
+    if(e.target.checked&&'Notification'in window&&Notification.permission!=='granted'){
+      const p=await Notification.requestPermission();
+      if(p!=='granted'){e.target.checked=false;return;}
+    }
+    s.notif=e.target.checked;save();
+  };
+  const list=document.getElementById('remList');
+  list.innerHTML='';
+  s.reminders.forEach((r,i)=>{
+    const row=document.createElement('div');row.className='set-row';
+    row.innerHTML=`<input type="time" value="${r.time}">
+      <span style="flex:1;font-size:.72rem;color:var(--muted);line-height:1.35">${r.msg}</span>
+      <span class="switch"><input type="checkbox" ${r.on?'checked':''}><i></i></span>`;
+    row.querySelector('input[type=time]').onchange=e=>{r.time=e.target.value;save();};
+    row.querySelector('input[type=checkbox]').onchange=e=>{r.on=e.target.checked;save();};
+    list.appendChild(row);
+  });
+  document.getElementById('btnExport').onclick=()=>{
+    const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='sleep-wealth-export.json';a.click();
+  };
+}
+
+/* ================= REMINDERS (app open only) ================= */
+let firedToday={};
+function checkReminders(now){
+  if(!S.settings.notif||!('Notification'in window)||Notification.permission!=='granted')return;
+  const hm=pad(now.getHours())+':'+pad(now.getMinutes());
+  const dk=dateKey(now);
+  if(S.logs[sleepDateOf(now)])return; // already asleep-logged tonight
+  S.settings.reminders.forEach((r,i)=>{
+    const fk=dk+'#'+i;
+    if(r.on&&r.time===hm&&!firedToday[fk]){
+      firedToday[fk]=1;
+      try{new Notification('Sleep Wealth',{body:r.msg,icon:'icon-192.png'});}catch(e){}
+    }
+  });
+}
+
+/* ================= NAV ================= */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById('view-'+b.dataset.view).classList.add('active');
+  if(b.dataset.view==='garden')renderGarden();
+});
+
+/* ================= BOOT ================= */
+function refreshAll(){refreshMetrics();renderGarden();renderCalendar();}
+applyTheme();initSettings();refreshAll();tick();setInterval(tick,15000);
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
