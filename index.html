@@ -374,6 +374,12 @@ h3.view-title{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1
         <label>Export data<span class="hint">download your logs as JSON</span></label>
         <button id="btnExport" style="border:none;background:var(--lavender);color:var(--ink);border-radius:10px;padding:8px 16px;font-family:'Jost';font-size:.8rem;cursor:pointer">Export</button>
       </div>
+      <div class="set-row">
+        <label>Import data<span class="hint">restore from a previous export; merges with existing logs</span></label>
+        <button id="btnImport" style="border:none;background:var(--lavender);color:var(--ink);border-radius:10px;padding:8px 16px;font-family:'Jost';font-size:.8rem;cursor:pointer">Import</button>
+        <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+      </div>
+      <div id="importMsg" style="font-size:.7rem;color:var(--muted);margin-top:4px;min-height:1.2em;letter-spacing:.03em"></div>
     </div>
   </section>
 </div>
@@ -889,6 +895,36 @@ function initSettings(){
     const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);
     a.download='sleep-wealth-export.json';a.click();
+  };
+
+  const importFile=document.getElementById('importFile');
+  const importMsg=document.getElementById('importMsg');
+  document.getElementById('btnImport').onclick=()=>importFile.click();
+  importFile.onchange=e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const data=JSON.parse(ev.target.result);
+        if(!data.logs||typeof data.logs!=='object') throw new Error('Not a Sleep Wealth export file.');
+        const before=Object.keys(S.logs).length;
+        // merge: keep existing log if same date already exists, otherwise add imported
+        let added=0,skipped=0;
+        Object.keys(data.logs).forEach(k=>{
+          if(!S.logs[k]){S.logs[k]=data.logs[k];added++;}
+          else skipped++;
+        });
+        save();refreshAll();
+        importMsg.style.color='var(--good)';
+        importMsg.textContent=`✓ Imported ${added} new log${added!==1?'s':''}.${skipped?' '+skipped+' duplicate'+(skipped!==1?'s':'')+' skipped.':''}`;
+      }catch(err){
+        importMsg.style.color='var(--gold)';
+        importMsg.textContent='✕ '+err.message;
+      }
+      importFile.value=''; // reset so same file can be re-imported if needed
+    };
+    reader.readAsText(file);
   };
 }
 
