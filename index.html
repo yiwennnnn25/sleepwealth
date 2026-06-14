@@ -15,7 +15,17 @@
 <meta name="apple-mobile-web-app-title" content="Sleep Wealth">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+<style>
+  /* System font fallbacks render immediately; custom fonts swap in once loaded */
+  body { font-family: system-ui, -apple-system, sans-serif; }
+  .serif, header h1, .narrative p, .clockrow .time, .metric .val,
+  .garden-meta .big, h3.view-title, .cal-head b, #logOverlay h2,
+  #logOverlay p, #milestone h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+</style>
 <style>
 :root{
   --bg:#F7F4F1;
@@ -86,13 +96,14 @@ header h1 em{font-style:italic;color:var(--gold)}
   border:1px solid var(--glass-border);
   border-radius:var(--card-radius);
   box-shadow:0 1px 2px rgba(96,84,120,.05), 0 12px 40px rgba(96,84,120,.08);
-  backdrop-filter:blur(20px) saturate(1.15);
-  -webkit-backdrop-filter:blur(20px) saturate(1.15);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
   padding:20px;
   margin-bottom:16px;
   transition:box-shadow .5s cubic-bezier(.25,.1,.25,1);
 }
 [data-theme="dark"] .card{box-shadow:0 1px 2px rgba(0,0,0,.25), 0 12px 40px rgba(0,0,0,.30)}
+.blur-ready .card{backdrop-filter:blur(20px) saturate(1.15);-webkit-backdrop-filter:blur(20px) saturate(1.15)}
 
 /* ---------- clock row ---------- */
 .clockrow{display:flex;gap:16px}
@@ -146,9 +157,10 @@ nav{
   bottom:calc(env(safe-area-inset-bottom) + 14px);
   display:flex;gap:4px;padding:6px;border-radius:99px;z-index:40;
   background:var(--glass);border:1px solid var(--glass-border);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
   box-shadow:var(--glass-shadow);
 }
+.blur-ready nav{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
 nav button{
   border:none;background:transparent;color:var(--muted);font-family:'Jost';font-weight:400;
   font-size:.72rem;letter-spacing:.1em;padding:9px 15px;border-radius:99px;cursor:pointer;
@@ -202,10 +214,11 @@ input[type=time],select{
 
 /* ---------- log overlay ---------- */
 #logOverlay{
-  position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  position:fixed;inset:0;background:var(--overlay);backdrop-filter:none;-webkit-backdrop-filter:none;
   display:none;align-items:center;justify-content:center;z-index:100;animation:fadein .7s cubic-bezier(.25,.1,.25,1);
 }
 #logOverlay.show{display:flex}
+.blur-ready #logOverlay{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 #logOverlay .inner{text-align:center;padding:0 36px}
 #logOverlay .orb{
   width:120px;height:120px;border-radius:50%;margin:0 auto 26px;
@@ -218,8 +231,9 @@ input[type=time],select{
 #logOverlay p{font-family:'Cormorant Garamond',serif;font-style:italic;color:#D9D2E6;font-size:1.15rem;line-height:1.5}
 
 /* ---------- milestone ---------- */
-#milestone{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:110}
+#milestone{position:fixed;inset:0;background:var(--overlay);backdrop-filter:none;-webkit-backdrop-filter:none;display:none;align-items:center;justify-content:center;z-index:110}
 #milestone.show{display:flex;animation:fadein .6s ease}
+.blur-ready #milestone{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 #milestone .inner{background:var(--glass);border:1px solid var(--glass-border);border-radius:28px;padding:38px 32px;text-align:center;max-width:320px;margin:0 20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
 #milestone .glyph{font-size:2rem}
 #milestone h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin:12px 0 8px}
@@ -907,6 +921,7 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
 function refreshAll(){refreshMetrics();renderGarden();renderCalendar();}
 applyTheme();initSettings();refreshAll();tick();setInterval(tick,15000);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('blur-ready')));
 </script>
 </body>
 </html>
